@@ -1,4 +1,5 @@
 from prefect import flow, task
+from prefect.task_runners import ThreadPoolTaskRunner
 from prefect.logging import get_run_logger
 import traceback
 import requests
@@ -41,8 +42,10 @@ def elt_flow():
     logger = get_run_logger()
     logger.info(f"Starting ETL flow with data: {data}")
     try:
-        response = run_https_request(data)
+        response_future = run_https_request.submit(data)  # Non-blocking
+        response = response_future.result()  # Explicitly resolve the future
         logger.info(f"Flow completed successfully with response: {response}")
+        return response  # Return the resolved result if needed
     except Exception as e:
         logger.error(f"Flow encountered an error: {e}")
         logger.debug(f"Full traceback: {traceback.format_exc()}")
