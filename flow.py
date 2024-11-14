@@ -2,6 +2,7 @@ from prefect import flow, task
 from prefect.logging import get_run_logger
 import traceback
 import requests
+import os
 
 @task(log_prints=True)
 def run_https_request(data):
@@ -23,13 +24,13 @@ def run_https_request(data):
 @flow(log_prints=True)
 def my_flow():
 
-    data = {
-        "client_id": "BpKWanZRLGRzoEPYH",
-        "datasource_id": "shopify",
-        "profile_id": "35286a-4",
-        "access_token": "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",
-        "start_date": "2024-11-13T00:00:00Z",
-    }
+    client_id = os.getenv("CLIENT_ID")
+    datasource_id = os.getenv("DATASOURCE_ID")
+    profile_id = os.getenv("PROFILE_ID")
+    access_token = os.getenv("ACCESS_TOKEN")
+    start_date = os.getenv("START_DATE")
+    
+    data = { client_id, datasource_id, profile_id, access_token, start_date }
 
     logger = get_run_logger()
     logger.info(f"Starting ETL flow with data: {data}")
@@ -39,4 +40,4 @@ def my_flow():
     except Exception as e:
         logger.error(f"Flow encountered an error: {e}")
         logger.debug(f"Full traceback: {traceback.format_exc()}")
-        raise  # Re-raise the exception to fail the flow with more detailed logs
+        raise 
