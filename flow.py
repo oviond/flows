@@ -1,9 +1,10 @@
 from prefect import flow, task
-from prefect.task_runners import ThreadPoolTaskRunner
+from prefect.task_runners import DaskTaskRunner
 from prefect.logging import get_run_logger
 import traceback
 import requests
 import os
+
 
 @task(log_prints=True)
 def run_https_request(data):
@@ -22,15 +23,15 @@ def run_https_request(data):
         logger.error(f"An error occurred: {err}")
         raise
 
-@flow(log_prints=True, task_runner=ThreadPoolTaskRunner(max_workers=10))
-def elt_flow():
 
+@flow(log_prints=True, task_runner=DaskTaskRunner(cluster_kwargs={"n_workers": 50}))
+def elt_flow():
     client_id = os.getenv("CLIENT_ID")
     datasource_id = os.getenv("DATASOURCE_ID")
     profile_id = os.getenv("PROFILE_ID")
     access_token = os.getenv("ACCESS_TOKEN")
     start_date = os.getenv("START_DATE")
-    
+
     data = {
         "client_id": client_id,
         "datasource_id": datasource_id,
@@ -49,4 +50,4 @@ def elt_flow():
     except Exception as e:
         logger.error(f"Flow encountered an error: {e}")
         logger.debug(f"Full traceback: {traceback.format_exc()}")
-        raise 
+        raise
