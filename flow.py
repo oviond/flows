@@ -22,7 +22,7 @@ def run_https_request(data):
         logger.error(f"An error occurred: {err}")
         raise
 
-@flow(log_prints=True)
+@flow(log_prints=True, task_runner=ThreadPoolTaskRunner(max_workers=10))
 def elt_flow():
 
     client_id = os.getenv("CLIENT_ID")
