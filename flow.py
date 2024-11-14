@@ -22,7 +22,7 @@ def run_https_request(data):
         raise
 
 @flow(log_prints=True)
-def my_flow():
+def elt_flow():
 
     client_id = os.getenv("CLIENT_ID")
     datasource_id = os.getenv("DATASOURCE_ID")
