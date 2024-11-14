@@ -30,7 +30,13 @@ def my_flow():
     access_token = os.getenv("ACCESS_TOKEN")
     start_date = os.getenv("START_DATE")
     
-    data = { client_id, datasource_id, profile_id, access_token, start_date }
+    data = {
+        "client_id": client_id,
+        "datasource_id": datasource_id,
+        "profile_id": profile_id,
+        "access_token": access_token,
+        "start_date": start_date,
+    }
 
     logger = get_run_logger()
     logger.info(f"Starting ETL flow with data: {data}")
