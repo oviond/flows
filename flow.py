@@ -25,10 +25,10 @@ def my_flow():
 
     data = {
         "client_id": "BpKWanZRLGRzoEPYH",
-        "datasource_id": "brevo",
-        "profile_id": "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",
-        "access_token": "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",
-        "start_date": "2023-11-01T00:00:00.000Z",
+        "datasource_id": "shopify",
+        "profile_id": "35286a-4",
+        "access_token": "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",
+        "start_date": "2024-11-13T00:00:00Z",
     }
 
     logger = get_run_logger()
